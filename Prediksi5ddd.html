@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Prediksi 5D</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: black;
+      padding: 10px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .login-box, .main-content {
+      width: 340px;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 10px;
+      background: #222;
+      box-shadow: 0 0 10px #444;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover { background: #218838; }
+    .result-box {
+      margin-top: 20px;
+      padding: 15px;
+      background: #333;
+      border-radius: 10px;
+    }
+    .number-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .number-item {
+      background: #444;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: yellow;
+    }
+  </style>
+</head>
+<body>
+  <header>PREDIKSI 5D</header>
+
+  <!-- LOGIN ADMIN -->
+  <div class="login-box" id="loginBox">
+    <h3>Login Admin</h3>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Masuk</button>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content" id="mainContent" style="display:none;">
+    <h3>Pilih Pola Prediksi</h3>
+    <select id="patternSelect">
+      <option value="1">Ganjil, Ganjil, Ganjil, Ganjil, Ganjil</option>
+      <option value="2">Genap, Genap, Ganjil, Genap, Genap</option>
+      <option value="3">Genap, Genap, Ganjil, Ganjil, Ganjil</option>
+      <option value="4">Genap, Genap, Ganjil, Ganjil, Genap</option>
+      <option value="5">Ganjil, Genap, Ganjil, Genap, Genap</option>
+      <option value="6">Genap, Genap, Genap, Genap, Genap</option>
+    </select>
+    <button onclick="generatePrediksi()">Buat Prediksi</button>
+
+    <div class="result-box">
+      <div><b>Hasil Prediksi (10 angka):</b></div>
+      <div class="number-list" id="prediksiList"></div>
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      let user = document.getElementById("username").value;
+      let pass = document.getElementById("password").value;
+      if (user === "admin" && pass === "1234") {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+      } else {
+        alert("Login gagal! Gunakan admin/1234");
+      }
+    }
+
+    function randomDigit(parity) {
+      let num;
+      do {
+        num = Math.floor(Math.random() * 10);
+      } while ((parity === "ganjil" && num % 2 === 0) || (parity === "genap" && num % 2 !== 0));
+      return num;
+    }
+
+    function generatePrediksi() {
+      const selected = document.getElementById("patternSelect").value;
+      const patterns = {
+        1: ["ganjil","ganjil","ganjil","ganjil","ganjil"],
+        2: ["genap","genap","ganjil","genap","genap"],
+        3: ["genap","genap","ganjil","ganjil","ganjil"],
+        4: ["genap","genap","ganjil","ganjil","genap"],
+        5: ["ganjil","genap","ganjil","genap","genap"],
+        6: ["genap","genap","genap","genap","genap"]
+      };
+
+      let pattern = patterns[selected];
+      let list = document.getElementById("prediksiList");
+      list.innerHTML = "";
+
+      // generate minimal 10 hasil
+      for (let i = 0; i < 10; i++) {
+        let result = pattern.map(p => randomDigit(p)).join("");
+        let item = document.createElement("div");
+        item.className = "number-item";
+        item.textContent = result;
+        list.appendChild(item);
+      }
+    }
+  </script>
+</body>
+</html>
